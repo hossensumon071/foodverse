@@ -1,26 +1,29 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const useFetch = (searchQuery) => {
-  const [data, setData] = useState([]);
+export const useFetch = (id) => {
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-   if(searchQuery) {
-    const getData = async (searchQuery) => {
-        try{
-          setLoading(true);
-          const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${searchQuery}`);
-          if(!res.ok) throw new Error ('No reciepe Found');
-          const data = await res.json();
-          setData(data.recipes);
-          setLoading(false);
-        } catch (err) {
-          setError(err.message)
-        }
+    const getRecipeItemData = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
+        );
+        if (!res.ok)
+          throw new Error("Something went wrong, please try again later!");
+        const data = await res.json();
+        setData(data?.data?.recipe);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+      }
     };
-    getData();
-   };
-  }, [searchQuery]);
-  return {data, loading, error}
-}
+
+    getRecipeItemData();
+  }, []);
+
+  return { data, loading, error };
+};
