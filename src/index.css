@@ -26,3 +26,10 @@ body{
 ::-webkit-scrollbar-track{
   background-color: #fff1f2;
 }
+.site-footer{
+  border-radius: 50px 50px 0 0px;
+  padding: 50px;
+}
+.text-left p{
+  font-size: 22px;
+}
