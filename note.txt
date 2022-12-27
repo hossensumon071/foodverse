@@ -1,0 +1,148 @@
+                food verse website 
+
+1. first install tailwind css in your project 
+2. select Rubik google font family and set up your project 
+3. copy the import link of this fonts and past css file and also body font-family
+4. project start korar age css file kichu starter pack starter css likte hobe css file 
+    body(font-family),
+    ::selection(),
+    ::-webkit-scrollbar(width),
+    ::-webkit-scrollbar-thumb(height, background-color, border-radius),
+    ::-webkit-scrollbar-track(background-color) 
+
+5. website er jonno kichu componnet create korte hobe 
+    -Home.jsx
+    -Navbar.jsx
+    -Favourites.jsx
+    -Receipe.jsx
+    -ReceipeItem.jsx
+    -fryingPen.jsx
+    -fryingPenStyle.css
+    -NotFound.jsx
+    -Footer.jsx
+sob gula functional component hobe 
+
+6. setup router and install it (npm i react-router-dom)
+   index.js jete hobe and then <BrowserRouter></BrowserRouter> modde React.StrictMode ta dukate hobe 
+
+7. app.js e jete hobe and sekhane apnake div er bitor e route set korte hobe 
+8. app.js Footer component ke set korte hobe jate footer ta alltime niche e thake content thakok r nai thakok tar jonno div er bahire Footer ta ke set rakte hobe but jokon rakben tokon abar error show korbe tai take fragment diye rakte and then er bitor footer rakte hobe and div er bitore ekta class dite hobe (min-h-screen) tahole footer ekdom niche chole jabe 
+
+//first step done starter pack o bolte paren ato kon ja korano holo
+
+//lets deign the page with tailwind css
+
+9. first Navbar component ke design korte hobe. amader design kora navbar e 3 ta jinish thakbe (logo, searchbar and menu )
+
+10. navbar name ekta class div nite and then oitar bitor logo search menu thakbe 
+     - first h2 diye logo tar name likte hobe r jehot logo ta 2 colors tai h2 er  bitor baki color er onghso toko ke span tag er bitor diye dite hobe.
+     - search-bar name class form nite hobe jate kew search korle submit korte pare . and oitar bitor ekta input nite hobe jar type hobe search and placholder jekono ekta dile hobe apnr design moto 
+     - menu class name ul tag nite hobe er bitor thakbe Li and li er bitor a ke dite hobe jehoto amra router use korchi tai navlink or link use korte pare a er bodli ei doi tai a ke represent kore abar navlink use korle er bitor (en to="/") use korte hobe 
+         
+         <NavLink en to="/">Home </NavLink>
+         <li>
+          <NavLink  to="/favourites">
+             Favourites <span className="favourites-count">{}</span> 
+          </NavLink>
+         </li>
+
+10. navbar class div jeita okhane flex boshate hobe justify-between , items-center dite hobe (flex justify-between items-center container mx-auto py-10 flex-col lg:flex-row gap-5)
+
+11. h2 er logo ke ekon style korte hobe h2 er bitor ja ja dite hobe 
+       (text-2xl font-bold lowercase italic) and span er bitor dite hobe text-rose-500
+
+
+12. abar app.js e jete hobe and app class e abr kichu css dite hobe 
+         (bg-rose-50 text-gray-600 text-lg)
+
+13. tarpor search er inpute field ke design korte hobe 
+              (bg-white/75 p-3 px-8 lg:w-96 rounded-full outline-none shadow-lg shadow-rose-100 focus:shadow-rose-200 duration-300)
+
+14. ekon ul menu ke design korte hobe 
+        (flex gap-5)
+        - navlink ke deign korte hobe 
+               (text-gray-400 hover:text-gray-600 duration-300)
+          navlink er bitor je span tag ache oita ke o design korte hobe 
+              (text-bold text-sky-400)
+
+        - active class dite navlink er bitore - navActive
+        - return er upore navActive name ekta arrow function nite hobe and parameter hisebe ekta object nibe object er name hocche isActive click korle isActive ta trigger hobe
+        - ei function ta return korbe r ekta object 
+                color: isActive ? "#f43f5e": null,
+        - ekhane jokon e click kora tokon isActive ti trigger hobe and color ta show korbe otherwise color ta null dekabe 
+
+
+15. ekon input er jonno state nite hobe cz input e kono kichu like jeno sei data ta pawa jai tai nite hobe
+          const [searchQuery, setSearchQuery] = useState('');
+
+          - tarpor input er bitor value dite hobe 
+                 value = {searchQuery}
+          - abr onChange() name ekta function o dite hobe jate kono kichu likar shate value ta change hoi setSearchQuery er maddome 
+                   onChange(e) => setSearchQuery(e.target.value);
+
+           - form er modde searchHandler name on submit add korte hobe jate inter dile form ta trigger hoi 
+
+                   const searchHandler = (e) => {
+                      e.preventDefault();
+
+                      console.log(searchQuery)
+                   }
+
+            - input e ekta refrence nite hobe jate submit korle lika ta chole jai 
+                   const inputFeildRef = useRef(null);
+                   ref={inputFeildRef}
+
+            -    setSearchQuery("");
+                 inputFeildRef.current.blur();
+                  
+                r ei doi ta searchHandler er bitor add kore dite hobe 
+
+16.  searchQuery jei value ta ache ekon sei ta navabr er bitor ache so amader ke ei searchQuery value ta ke  home er bitor nite hobe 
+       - navabr e searchQuery jei state ta ache sei ta ke tule niye app.jsx e patate jate kore okhane theke navbar o home doi tai use kora jai mane stae ta ke top e niye jete hobe . abr eki bhave search handler ta ke o niye jete hobe . ekon niya jawar age amader ke ekta way follow korte hobe 
+           - first jeigula niye jaben sei gula ke props akare navabr paramater hisebe diye rakte hobe 
+
+
+17. getData name e ekta async function nite hobe jar parameter hisebe searchQuery ta nibe jar bitore data gula ke fetch korte hobe 
+
+            const getData = async (searchQuery) => {
+            const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${searchQuery}`);
+            const data = await res.json();
+            console.log(data.recipes)
+            }
+
+18. fecth korar por jei data paichi tar jonno abar r ekta state nite hobe 
+         const [recipes, setRecipes] = useState([]);
+
+19. jodi response property correct na thake tahole ekta error throw korte hobe 
+     if(!res.ok) throw new Error ('No receipe Found!');
+
+20. ato kon fetch kore jei data peyechi aita ke try{} er bitor rakte hobe 
+                 const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${searchQuery}`);
+                 if(!res.ok) throw new Error ('No reciepe Found');
+                 const data = await res.json();
+                 setRecipes(data.recipes)
+
+
+21. try{} er niche obossoi catch(err){} use korte hobe  . so erjonno abr 2 ta state extra add korte hobe 
+             const [loading, setLoading] = useState(false);
+             const [error, setError] = useState('');
+
+22.  ekon try er bitor setLoading(true) kore dite hobe . abar data set kore pore setLoading(flase) false kore dite hobe
+
+23. ekon jodi error khai tai tahole catch block setError er message ta set kore dite hobe 
+
+24. 
+              const getData = async (searchQuery) => {
+                try{
+                setLoading(true);
+                const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${searchQuery}`);
+                if(!res.ok) throw new Error ('No reciepe Found');
+                const data = await res.json();
+                setRecipes(data.recipes);
+                setLoading(false);
+                } catch (err) {
+                setError(err.message)
+                }
+            }
+
+ei conding ta ke ekta hook baniye tarpor reke dite hobe 
